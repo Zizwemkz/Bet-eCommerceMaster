@@ -1,4 +1,5 @@
-﻿using BET_eCommerceAPI.Interface;
+﻿//using BET_eCommerceAPI.Authentication;
+using BET_eCommerceAPI.Interface;
 using BET_eCommerceAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -19,46 +20,98 @@ namespace BET_eCommerceAPI.Services
 
 
 
-        public async Task<int> AddItemAsync(ItemModel itemModel)
+        public async Task<int> AddItemAsync(Item itemModel)
         {
-             itemModel.ItemId = Guid.NewGuid();
-             var ItemPar = await _dbContext.TbItem.FindAsync(itemModel.ItemId);
-
-            if (ItemPar != null)
-                throw new ArgumentException("Item already exist"); //Add exceptions middleware
-
-            var Item = new TbItem
+           
+            var itempar = new Item
             {
-                ItemId = itemModel.ItemId,
                 Name = itemModel.Name,
                 Description = itemModel.Description,
-                Quantity  = itemModel.QuantityInStock,
-                Price = itemModel.Price
+                QuantityInStock = itemModel.QuantityInStock,
+                Price = itemModel.Price,
+                Picture = itemModel.Picture,
+                Category_ID = itemModel.Category_ID
+
             };
 
-            await _dbContext.TbItem.AddAsync(Item);
+            await _dbContext.Items.AddAsync(itempar);
 
             return await _dbContext.SaveChangesAsync();
         }
 
 
 
-        public async Task<ItemModel> GetItemAsync(int ItemId)
+        public async Task<Item> GetItemAsync(int ItemId)
         {
-            var result = await _dbContext.TbItem.FindAsync(ItemId);
+            var result = await _dbContext.Items.FindAsync(ItemId);
 
-            var itempar = new ItemModel
+            var itempar = new Item
             {
-                ItemId = result.ItemId,
+                ItemCode = result.ItemCode,
                 Name = result.Name,
                 Description = result.Description,
-                QuantityInStock = result.Quantity,
-                Price = result.Price
+                QuantityInStock = result.QuantityInStock,
+                Price = result.Price,
+                Category_ID= result.Category_ID
 
             };
 
             return itempar;
         }
+
+
+        public async Task<List<Item>> GetItembyCategoryIdAsync(int Category_Id)
+        {
+            var itempar = new List<Item>();
+            var result =  _dbContext.Items.Where(x=>x.Category_ID == Category_Id).ToList();
+
+            if (result != null)
+            {
+                foreach (var colitem in result)
+                {
+                    var itemcol = new Item
+                    {
+                        ItemCode = colitem.ItemCode,
+                        Name = colitem.Name,
+                        Description = colitem.Description,
+                        QuantityInStock = colitem.QuantityInStock,
+                        Price = colitem.Price,
+                        Category_ID = colitem.Category_ID
+
+                    };
+                    itempar.Add(itemcol);
+                }
+            }
+            return itempar;
+        }
+
+
+
+        public async Task<List<Item>> GetAllItemAsync()
+        {
+            var Itemlist =  _dbContext.Items.Where(x => x.QuantityInStock > 0).ToList();
+          
+            var itempar = new List<Item>();
+
+            foreach (var colitem in Itemlist)
+            {
+               itempar.Add(new Item
+               {
+                   ItemCode = colitem.ItemCode,
+                   Name = colitem.Name,
+                   Description = colitem.Description,
+                   QuantityInStock = colitem.QuantityInStock,
+                   Price = colitem.Price,
+                   Picture =  colitem.Picture,
+                   Category_ID = colitem.Category_ID
+               });
+            }
+            if (itempar.Count() == 0)
+                throw new ArgumentException("No Item where found");
+
+            return  itempar;
+        }
+
 
 
     }

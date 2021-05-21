@@ -8,7 +8,10 @@ namespace BET_eCommerceAPI.Interface
 {
     public interface IItemService
     {
-        Task<int> AddItemAsync(ItemModel ItemModel);
-        Task<ItemModel> GetItemAsync(int ItemId);
+        Task<int> AddItemAsync(Item ItemModel);
+        Task<Item> GetItemAsync(int ItemId);
+        Task<List<Item>> GetAllItemAsync();
+        Task<List<Item>> GetItembyCategoryIdAsync(int Category_Id);
+        
     }
 }

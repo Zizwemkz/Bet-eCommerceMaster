@@ -8,7 +8,7 @@ namespace BET_eCommerceAPI.Models
 {
     public class OrderModel
     {
-        public string Order_ID { get; set; }
+        public string OrderID { get; set; }
 
         [Required]
         public int OrderitemId { get; set; }

@@ -1,5 +1,7 @@
-﻿using BET_eCommerceAPI.Interface;
+﻿//using BET_eCommerceAPI.Authentication;
+using BET_eCommerceAPI.Interface;
 using BET_eCommerceAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,38 +20,55 @@ namespace BET_eCommerceAPI.Services
         }
 
 
-
-        public async Task<int> AddCategoryAsync(CategoryModel categoryModel)
+        public async Task<int> AddOrgCategoryAsync(CategoryModel categoryModel)
         {
-            var studentClass = await _dbContext.TbCategory.FindAsync(categoryModel.CategoryId);
+           
+            var categoryPar = await _dbContext.Categories.FindAsync(categoryModel.Category_ID);
 
-            if (studentClass == null)
-                throw new ArgumentException("Invalid category Id"); //Add exceptions middleware
+            if (categoryPar != null)
+                throw new ArgumentException("Item already exist"); //Add exceptions middleware
 
-            var Category = new TbCategory
+            var Category = new Category
             {
-                CategoryID = categoryModel.CategoryId,
                 Name = categoryModel.Name,
-                Description = categoryModel.Description
+                Department_ID = categoryModel.Department_ID
             };
 
-            await _dbContext.TbCategory.AddAsync(Category);
+            await _dbContext.Categories.AddAsync(Category);
 
             return await _dbContext.SaveChangesAsync();
         }
 
-
-
-
-        public async Task<CategoryModel> GetcategoryAsync(int categoryId)
+        public async Task<List<CategoryModel>> GetAllCategoriesAync()
         {
-            var result = await _dbContext.TbCategory.FindAsync(categoryId);
+            var Categorylist = await _dbContext.Categories.ToListAsync();
+            var itempar = new List<CategoryModel>();
+
+            foreach (var item in Categorylist)
+            {
+                itempar.Add(new CategoryModel
+                {
+                    Category_ID = item.Category_ID,
+                    Name = item.Name,
+                    Department_ID = item.Department_ID,
+                });
+            }
+            if (itempar.Count() == 0)
+                throw new ArgumentException("No Item where found");
+
+            return itempar;
+        }
+
+
+        public async Task<CategoryModel> GetcategoryByIdAsync(int categoryId)
+        {
+            var result = await _dbContext.Categories.FindAsync(categoryId);
 
             var categoryModel = new CategoryModel
             {
-                CategoryId = result.CategoryID,
+                Category_ID = result.Category_ID,
                 Name = result.Name,
-                Description = result.Description,
+                Department_ID = result.Department_ID,
                
             };
 

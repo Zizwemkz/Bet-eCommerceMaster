@@ -15,10 +15,6 @@ namespace BET_eCommerceAPI.Models
         public Guid ItemId { get; set; }
 
         [Required]
-        [ForeignKey("Category_Id")]
-        public int Category_Id { get; set; }
-
-        [Required]
         public string Name { get; set; }
     
         [Required]
@@ -28,6 +24,11 @@ namespace BET_eCommerceAPI.Models
 
         [Required]
         public double Price { get; set; }
+
+        [Required]
+        [ForeignKey("CategoryId")]
+        public int CategoryId { get; set; }
+
 
         public virtual TbCategory TbCategory { get; set; }
         //public virtual ICollection<Cart_Item> Cart_Items { get; set; }

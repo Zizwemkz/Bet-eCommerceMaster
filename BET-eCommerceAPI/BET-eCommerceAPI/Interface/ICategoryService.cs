@@ -8,8 +8,8 @@ namespace BET_eCommerceAPI.Interface
 {
     public interface ICategoryService
     {
-        Task<int> AddCategoryAsync(CategoryModel categoryModel);
-        Task<CategoryModel> GetcategoryAsync(int categoryId);
-
+        Task<int> AddOrgCategoryAsync(CategoryModel categoryModel);
+        Task<CategoryModel> GetcategoryByIdAsync(int categoryId); 
+        Task<List<CategoryModel>> GetAllCategoriesAync();
     }
 }

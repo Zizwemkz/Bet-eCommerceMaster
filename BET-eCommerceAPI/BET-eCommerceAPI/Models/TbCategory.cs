@@ -10,7 +10,7 @@ namespace BET_eCommerceAPI.Models
     public class TbCategory
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CategoryID { get; set; }
 
         [Required]

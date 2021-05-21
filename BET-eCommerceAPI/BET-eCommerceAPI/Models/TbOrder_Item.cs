@@ -13,9 +13,13 @@ namespace BET_eCommerceAPI.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
-
         public int OrderItemId {get;set;}
-        public int OrderId { get; set; }
-        public int Quatity { get; set; }
+        public int Quantity { get; set; }
+
+        [Required]
+        [ForeignKey("ItemId")]
+        public Guid ItemId { get; set; }
+        //public string OrderID { get; set; }
+        public virtual TbItem TbItem { get; set; }
     }
 }

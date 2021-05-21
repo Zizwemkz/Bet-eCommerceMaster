@@ -9,6 +9,6 @@ namespace BET_eCommerceAPI.Interface
     public interface IOrderService
     {
         Task<int> AddOrderAsync(OrderModel OrderModel);
-        Task<OrderModel> GetOrderAsync(int Orderid);
+        Task<OrderModel> GetOrderAsync(string Orderid);
     }
 }

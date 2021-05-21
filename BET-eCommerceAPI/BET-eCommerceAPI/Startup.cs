@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+//using BET_eCommerceAPI.Authentication;
 using BET_eCommerceAPI.Interface;
 using BET_eCommerceAPI.Models;
 using BET_eCommerceAPI.Services;
@@ -39,11 +40,17 @@ namespace BET_eCommerceAPI
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddTransient<IItemService, ItemService>();
+        
             services.AddTransient<ICategoryService, CategoryService>();
-            //services.AddTransient<IStudentAttendanceService, StudentAttendanceService>();
-            //services.AddTransient<IAuthService, authService>();
-     
+            services.AddTransient<IOrderItemService, OrderItemService>();
+            services.AddTransient<IItemService, ItemService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IAuthService, AuthService>();
+
+            services.AddTransient<IDepartmentService, DepartmentService>();
+            services.AddTransient<ICartService, CartService>();
+            services.AddTransient<ICartItemService, CartItemService>();
+
 
         }
 

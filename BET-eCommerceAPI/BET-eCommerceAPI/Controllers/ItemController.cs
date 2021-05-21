@@ -21,34 +21,46 @@ namespace BET_eCommerceAPI.Controllers
         {
             _IItemService = ItemService;
         }
-        
-        // GET: api/Item
-        [HttpGet]
-        public async Task<ActionResult<ItemModel>> Get(int itemId)
-        {
-            return Ok(await _IItemService.GetItemAsync(itemId));
-        }
 
-
-
-        // POST: api/Item
         [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] ItemModel itemModel)
+        public async Task<ActionResult<Item>> Post(Item itemmodele)
         {
-            return Ok(await _IItemService.AddItemAsync(itemModel));
+            return Ok(await _IItemService.AddItemAsync(itemmodele));
         }
 
 
-        // PUT: api/Item/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // GET: api/Item
+        [HttpGet("{ItemCode}")]
+        public async Task<ActionResult<Item>> Get(int ItemCode)
         {
+            return Ok(await _IItemService.GetItemAsync(ItemCode));
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet]
+        public async Task<List<Item>> Get()
         {
+            return (await _IItemService.GetAllItemAsync());
         }
+
+        // GET: api/Item
+        //[HttpGet("{Category_Id}")]
+        //public async Task<ActionResult<Item>> Get(int Category_Id)
+        //{
+        //    return Ok(await _IItemService.GetItembyCategoryIdAsync(Category_Id));
+        //}
+
+
+
+        //// PUT: api/Item/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
+
+        //// DELETE: api/ApiWithActions/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

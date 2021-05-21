@@ -1,4 +1,6 @@
-﻿using BET_eCommerceAPI.Models;
+﻿//using BET_eCommerceAPI.Authentication;
+using BET_eCommerceAPI.Interface;
+using BET_eCommerceAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BET_eCommerceAPI.Services
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -19,18 +21,19 @@ namespace BET_eCommerceAPI.Services
 
         public async Task<int> AddOrderAsync(OrderModel ordermodel)
         {
-            var OrderClass = await _dbContext.TbOrder.FindAsync(ordermodel.Order_ID);
+            var findOrder = await _dbContext.TbOrder.FindAsync(ordermodel.OrderID);
 
-            if (OrderClass == null)
-                throw new ArgumentException("Invalid Class Id"); //Add exceptions middleware
+            if (findOrder != null)
+                throw new ArgumentException("Order Already in the database"); //Add exceptions middleware
 
             var Orderpar = new TbOrder
             {
-                Order_ID = ordermodel.Order_ID,
+                OrderID = ordermodel.OrderID,
                 userName = ordermodel.userName,
                 Total = ordermodel.Total,
-                shippedStatus = ordermodel.shippedStatus,
-                createddate = ordermodel.createddate
+                ShippedStatus = ordermodel.shippedStatus,
+                Createddate = DateTime.Now,
+                OrderitemId = ordermodel.OrderitemId
             };
 
             await _dbContext.TbOrder.AddAsync(Orderpar);
@@ -38,25 +41,27 @@ namespace BET_eCommerceAPI.Services
             return await _dbContext.SaveChangesAsync();
         }
 
-
-
-
-        public async Task<OrderModel> GetOrderAsync(int OrderId)
+        public async Task<OrderModel> GetOrderAsync(string OrderId)
         {
+            var ordermodel = new OrderModel();
             var result = await _dbContext.TbOrder.FindAsync(OrderId);
-
-            var ordermodel = new OrderModel
+            if (result != null)
             {
-                Order_ID = result.Order_ID,
-                userName = result.userName,
-                Total = result.Total,
-                shippedStatus = result.shippedStatus,
-                createddate = result.createddate
-
-            };
-
+                ordermodel = new OrderModel
+                {
+                    OrderID = result.OrderID,
+                    userName = result.userName,
+                    Total = result.Total,
+                    shippedStatus = result.ShippedStatus,
+                    createddate = result.Createddate,
+                    OrderitemId = result.OrderitemId
+                };
+            }
+            else
+            {
+                throw new ArgumentException("The is No order for the sent request");
+            }
             return ordermodel;
         }
-
     }
 }

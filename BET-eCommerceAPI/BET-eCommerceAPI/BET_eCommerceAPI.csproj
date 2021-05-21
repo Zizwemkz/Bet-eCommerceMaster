@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Entity\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

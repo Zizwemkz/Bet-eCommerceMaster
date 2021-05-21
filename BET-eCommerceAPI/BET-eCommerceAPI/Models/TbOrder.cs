@@ -11,7 +11,7 @@ namespace BET_eCommerceAPI.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Order_ID { get; set; }
+        public string OrderID { get; set; }
 
         [Required]
         public int OrderitemId { get; set; }
@@ -19,10 +19,12 @@ namespace BET_eCommerceAPI.Models
         [ForeignKey("userName")]
         public string userName { get; set; }
         public double Total { get; set; }
-        public bool shippedStatus { get; set; }
-        public DateTime createddate { get; set; }
+        public bool ShippedStatus { get; set; }
+        public DateTime Createddate { get; set; }
 
-        public virtual ApplicationUser TbUser { get; set; }
+        //public virtual ApplicationUser TbUser { get; set; }
+        
+        
         //public virtual ICollection<Order_Item> Order_Items { get; set; }
         //public virtual ICollection<Shipping_Address> Shipping_Addresses { get; set; }
 

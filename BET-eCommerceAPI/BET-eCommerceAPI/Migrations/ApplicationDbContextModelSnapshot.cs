@@ -19,84 +19,35 @@ namespace BET_eCommerceAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BET_eCommerceAPI.Models.TbCategory", b =>
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Address", b =>
                 {
-                    b.Property<int>("Category_ID");
+                    b.Property<int>("Address_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
+                    b.Property<string>("City");
+
+                    b.Property<string>("Country");
+
+                    b.Property<string>("Discriminator")
                         .IsRequired();
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("State");
 
-                    b.HasKey("Category_ID");
+                    b.Property<string>("ZipCode");
 
-                    b.ToTable("TbCategory");
+                    b.Property<string>("street_name");
+
+                    b.Property<int>("street_number");
+
+                    b.HasKey("Address_ID");
+
+                    b.ToTable("Addresses");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Address");
                 });
 
-            modelBuilder.Entity("BET_eCommerceAPI.Models.TbItem", b =>
-                {
-                    b.Property<Guid>("ItemId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Category_Id");
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<double>("Price");
-
-                    b.Property<int>("QuantityInStock");
-
-                    b.HasKey("ItemId");
-
-                    b.HasIndex("Category_Id");
-
-                    b.ToTable("TbItem");
-                });
-
-            modelBuilder.Entity("BET_eCommerceAPI.Models.TbOrder", b =>
-                {
-                    b.Property<string>("Order_ID");
-
-                    b.Property<int>("OrderitemId");
-
-                    b.Property<string>("TbUserId");
-
-                    b.Property<double>("Total");
-
-                    b.Property<DateTime>("createddate");
-
-                    b.Property<bool>("shippedStatus");
-
-                    b.Property<string>("userName");
-
-                    b.HasKey("Order_ID");
-
-                    b.HasIndex("TbUserId");
-
-                    b.ToTable("TbOrder");
-                });
-
-            modelBuilder.Entity("BET_eCommerceAPI.Models.TbOrder_Item", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<int>("OrderId");
-
-                    b.Property<int>("OrderItemId");
-
-                    b.Property<int>("Quatity");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TbOrder_item");
-                });
-
-            modelBuilder.Entity("BET_eCommerceAPI.Models.TbUser", b =>
+            modelBuilder.Entity("BET_eCommerceAPI.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -110,6 +61,10 @@ namespace BET_eCommerceAPI.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -145,6 +100,314 @@ namespace BET_eCommerceAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Cart", b =>
+                {
+                    b.Property<string>("cart_id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("date_created");
+
+                    b.HasKey("cart_id");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Cart_Item", b =>
+                {
+                    b.Property<string>("cart_item_id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("cart_id");
+
+                    b.Property<int>("item_id");
+
+                    b.Property<double>("price");
+
+                    b.Property<int>("quantity");
+
+                    b.HasKey("cart_item_id");
+
+                    b.HasIndex("cart_id");
+
+                    b.HasIndex("item_id");
+
+                    b.ToTable("Cart_Items");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Category", b =>
+                {
+                    b.Property<int>("Category_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Department_ID");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80);
+
+                    b.HasKey("Category_ID");
+
+                    b.HasIndex("Department_ID");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Customer", b =>
+                {
+                    b.Property<string>("Email")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(35);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(35);
+
+                    b.Property<string>("phone")
+                        .IsRequired()
+                        .HasMaxLength(10);
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Department", b =>
+                {
+                    b.Property<int>("Department_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Department_Name")
+                        .IsRequired()
+                        .HasMaxLength(80);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.HasKey("Department_ID");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Item", b =>
+                {
+                    b.Property<int>("ItemCode")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Category_ID");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80);
+
+                    b.Property<byte[]>("Picture");
+
+                    b.Property<double>("Price");
+
+                    b.Property<int>("QuantityInStock");
+
+                    b.HasKey("ItemCode");
+
+                    b.HasIndex("Category_ID");
+
+                    b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Order", b =>
+                {
+                    b.Property<string>("Order_ID");
+
+                    b.Property<string>("Email");
+
+                    b.Property<DateTime>("date_created");
+
+                    b.Property<bool>("packed");
+
+                    b.Property<bool>("shipped");
+
+                    b.Property<string>("status");
+
+                    b.HasKey("Order_ID");
+
+                    b.HasIndex("Email");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Order_Item", b =>
+                {
+                    b.Property<int>("Order_Item_id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Order_id");
+
+                    b.Property<bool>("accepted");
+
+                    b.Property<DateTime?>("date_accepted");
+
+                    b.Property<DateTime?>("date_replied");
+
+                    b.Property<DateTime?>("date_shipped");
+
+                    b.Property<int>("item_id");
+
+                    b.Property<double>("price");
+
+                    b.Property<int>("quantity");
+
+                    b.Property<bool>("replied");
+
+                    b.Property<bool>("shipped");
+
+                    b.Property<string>("status");
+
+                    b.HasKey("Order_Item_id");
+
+                    b.HasIndex("Order_id");
+
+                    b.HasIndex("item_id");
+
+                    b.ToTable("Order_Items");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Order_Tracking", b =>
+                {
+                    b.Property<int>("tracking_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Recipient");
+
+                    b.Property<DateTime>("date");
+
+                    b.Property<string>("order_ID");
+
+                    b.Property<string>("status");
+
+                    b.HasKey("tracking_ID");
+
+                    b.HasIndex("order_ID");
+
+                    b.ToTable("Order_Trackings");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Payment", b =>
+                {
+                    b.Property<int>("payment_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("AmountPaid");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<string>("Order_ID");
+
+                    b.Property<string>("PaymentFor")
+                        .IsRequired();
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired();
+
+                    b.HasKey("payment_ID");
+
+                    b.HasIndex("Email");
+
+                    b.HasIndex("Order_ID");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.TbCategory", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("TbCategory");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.TbItem", b =>
+                {
+                    b.Property<Guid>("ItemId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<double>("Price");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("ItemId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("TbItem");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.TbOrder", b =>
+                {
+                    b.Property<string>("OrderID");
+
+                    b.Property<DateTime>("Createddate");
+
+                    b.Property<int>("OrderitemId");
+
+                    b.Property<bool>("ShippedStatus");
+
+                    b.Property<double>("Total");
+
+                    b.Property<string>("userName");
+
+                    b.HasKey("OrderID");
+
+                    b.ToTable("TbOrder");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.TbOrder_Item", b =>
+                {
+                    b.Property<int>("Id");
+
+                    b.Property<Guid>("ItemId");
+
+                    b.Property<int>("OrderItemId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("TbOrder_item");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -257,19 +520,109 @@ namespace BET_eCommerceAPI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Shipping_Address", b =>
+                {
+                    b.HasBaseType("BET_eCommerceAPI.Models.Address");
+
+                    b.Property<string>("Address_Type");
+
+                    b.Property<string>("Building_Name");
+
+                    b.Property<string>("Comments");
+
+                    b.Property<string>("Contact_Number");
+
+                    b.Property<string>("Floor");
+
+                    b.Property<string>("Order_ID");
+
+                    b.HasIndex("Order_ID");
+
+                    b.ToTable("Shipping_Address");
+
+                    b.HasDiscriminator().HasValue("Shipping_Address");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Cart_Item", b =>
+                {
+                    b.HasOne("BET_eCommerceAPI.Models.Cart", "Cart")
+                        .WithMany("Cart_Items")
+                        .HasForeignKey("cart_id");
+
+                    b.HasOne("BET_eCommerceAPI.Models.Item", "Item")
+                        .WithMany("Cart_Items")
+                        .HasForeignKey("item_id")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Category", b =>
+                {
+                    b.HasOne("BET_eCommerceAPI.Models.Department", "Department")
+                        .WithMany("Categories")
+                        .HasForeignKey("Department_ID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Item", b =>
+                {
+                    b.HasOne("BET_eCommerceAPI.Models.Category", "Category")
+                        .WithMany("Items")
+                        .HasForeignKey("Category_ID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Order", b =>
+                {
+                    b.HasOne("BET_eCommerceAPI.Models.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("Email");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Order_Item", b =>
+                {
+                    b.HasOne("BET_eCommerceAPI.Models.Order", "Order")
+                        .WithMany("Order_Items")
+                        .HasForeignKey("Order_id");
+
+                    b.HasOne("BET_eCommerceAPI.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("item_id")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Order_Tracking", b =>
+                {
+                    b.HasOne("BET_eCommerceAPI.Models.Order", "Order")
+                        .WithMany("Order_Tracking")
+                        .HasForeignKey("order_ID");
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Payment", b =>
+                {
+                    b.HasOne("BET_eCommerceAPI.Models.Customer", "Customer")
+                        .WithMany("Payments")
+                        .HasForeignKey("Email")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BET_eCommerceAPI.Models.Order", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("Order_ID");
+                });
+
             modelBuilder.Entity("BET_eCommerceAPI.Models.TbItem", b =>
                 {
                     b.HasOne("BET_eCommerceAPI.Models.TbCategory", "TbCategory")
                         .WithMany()
-                        .HasForeignKey("Category_Id")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("BET_eCommerceAPI.Models.TbOrder", b =>
+            modelBuilder.Entity("BET_eCommerceAPI.Models.TbOrder_Item", b =>
                 {
-                    b.HasOne("BET_eCommerceAPI.Models.TbUser", "TbUser")
+                    b.HasOne("BET_eCommerceAPI.Models.TbItem", "TbItem")
                         .WithMany()
-                        .HasForeignKey("TbUserId");
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -282,7 +635,7 @@ namespace BET_eCommerceAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("BET_eCommerceAPI.Models.TbUser")
+                    b.HasOne("BET_eCommerceAPI.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -290,7 +643,7 @@ namespace BET_eCommerceAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("BET_eCommerceAPI.Models.TbUser")
+                    b.HasOne("BET_eCommerceAPI.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -303,7 +656,7 @@ namespace BET_eCommerceAPI.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BET_eCommerceAPI.Models.TbUser")
+                    b.HasOne("BET_eCommerceAPI.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -311,10 +664,17 @@ namespace BET_eCommerceAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("BET_eCommerceAPI.Models.TbUser")
+                    b.HasOne("BET_eCommerceAPI.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BET_eCommerceAPI.Models.Shipping_Address", b =>
+                {
+                    b.HasOne("BET_eCommerceAPI.Models.Order", "Order")
+                        .WithMany("Shipping_Addresses")
+                        .HasForeignKey("Order_ID");
                 });
 #pragma warning restore 612, 618
         }

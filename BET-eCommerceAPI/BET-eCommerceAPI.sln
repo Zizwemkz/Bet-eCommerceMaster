@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.960
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BET_eCommerceAPI", "BET-eCommerceAPI\BET_eCommerceAPI.csproj", "{94E57542-B84C-453F-A2CD-E83321206BD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BET_eCommerceAPI", "BET-eCommerceAPI\BET_eCommerceAPI.csproj", "{94E57542-B84C-453F-A2CD-E83321206BD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

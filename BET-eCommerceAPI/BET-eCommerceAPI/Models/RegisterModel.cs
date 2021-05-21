@@ -16,5 +16,17 @@ namespace BET_eCommerceAPI.Models
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+       public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+       public string LastName { get; set; }
+      
+        [Required]
+        [Display(Name = "Phone Number")]
+       public string phone { get; set; }
     }
 }

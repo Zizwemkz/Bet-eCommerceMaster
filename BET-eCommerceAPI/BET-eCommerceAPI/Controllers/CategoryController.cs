@@ -22,11 +22,18 @@ namespace BET_eCommerceAPI.Controllers
         }
 
         // GET: api/Item
-        [HttpGet]
+        [HttpGet("{CategoryId}")]
         public async Task<ActionResult<CategoryModel>> Get(int CategoryId)
         {
-            return Ok(await _CategoryService.GetcategoryAsync(CategoryId));
+            return Ok(await _CategoryService.GetcategoryByIdAsync(CategoryId));
         }
+
+        [HttpGet]
+        public async Task<ActionResult<CategoryModel>> Get()
+        {
+            return Ok(await _CategoryService.GetAllCategoriesAync());
+        }
+
 
 
 
@@ -34,7 +41,7 @@ namespace BET_eCommerceAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] CategoryModel CategoryModel)
         {
-            return Ok(await _CategoryService.AddCategoryAsync(CategoryModel));
+            return Ok(await _CategoryService.AddOrgCategoryAsync(CategoryModel));
         }
 
 

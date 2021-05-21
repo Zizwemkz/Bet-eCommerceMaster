@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace BET_eCommerceAPI.Interface
 {
-    public class IAuthService
+    public interface IAuthService
     {
-        //Task<Response> RegisterAsync(RegisterModel registerModel, bool admin);
+        Task<Response> RegisterAsync(RegisterModel registerModel);
+        Task<Response> LogInAsync(LoginModel loginmodel);
+        Task<RegisterModel> GetApplicationuser(RegisterModel loginmodel);
     }
 }
