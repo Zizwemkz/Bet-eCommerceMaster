@@ -39,8 +39,6 @@ namespace BET_eCommerceAPI.Services
             return await _dbContext.SaveChangesAsync();
         }
 
-
-
         public async Task<Item> GetItemAsync(int ItemId)
         {
             var result = await _dbContext.Items.FindAsync(ItemId);

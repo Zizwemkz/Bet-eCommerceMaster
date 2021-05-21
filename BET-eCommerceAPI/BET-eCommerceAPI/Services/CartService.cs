@@ -23,30 +23,16 @@ namespace BET_eCommerceAPI.Services
     
         public async Task<int> AddCartAsync(Cartmodel cartmodel)
         {
-            //string user = await _dbContext.Carts.FindAsync(Username);
-            var CartPar = await _dbContext.Carts.FindAsync();
+            var CartPar = await _dbContext.Carts.FindAsync(cartmodel);
 
-
-            //var item = await _dbContext.Items.FindAsync(itemmodel.ItemId);
-            //if (item != null)
-            //{
-                //var cartItem = dataContext.Cart_Items.FirstOrDefault(x => x.cart_id == shoppingCartID && x.item_id == item.ItemCode);
-                //        if (cartItem == null)
-                //        {
-                //            var cart = dataContext.Carts.Find(shoppingCartID);
-                //            if (cart == null)
-
-                // if (CartPar != null)
-                // throw new ArgumentException("Item already exist"); //Add exceptions middleware  
-                var cartobj = new Cart
+              var cartobj = new Cart
               {
                 cart_id = cartmodel.cart_id,
                 date_created = cartmodel.date_created,
               };
 
+            await _dbContext.Carts.AddAsync(cartobj);
 
-            //await _dbContext.Carts.AddAsync(cartobj);
-            //}
             return await _dbContext.SaveChangesAsync();
         }
 

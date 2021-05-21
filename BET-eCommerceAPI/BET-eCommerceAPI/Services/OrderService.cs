@@ -17,8 +17,6 @@ namespace BET_eCommerceAPI.Services
             _dbContext = applicationDbContext;
         }
 
-
-
         public async Task<int> AddOrderAsync(OrderModel ordermodel)
         {
             var findOrder = await _dbContext.TbOrder.FindAsync(ordermodel.OrderID);

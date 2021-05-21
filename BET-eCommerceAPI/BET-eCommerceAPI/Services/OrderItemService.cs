@@ -19,9 +19,9 @@ namespace BET_eCommerceAPI.Services
 
         public async Task<int> AddOrderItemAsync(OrderItemModel orderItemmodel)
         {
-            //var OrderItem = await _dbContext.TbOrder_item.FindAsync(orderItemmodel.OrderItemId);
-            //if (OrderItem != null)
-            //    throw new ArgumentException("Invalid Class Id"); //Add exceptions middleware
+            var OrderItem = await _dbContext.TbOrder_item.FindAsync(orderItemmodel.OrderItemId);
+            if (OrderItem != null)
+                throw new ArgumentException("Invalid Class Id"); //Add exceptions middleware
 
             var OrderItempar = new TbOrder_Item
             {
@@ -47,10 +47,6 @@ namespace BET_eCommerceAPI.Services
             return await _dbContext.SaveChangesAsync();
         }
 
-
-
-
-
         public async Task<OrderItemModel> GetOrderItemAsync(int OrderItemId)
         {
             var result = await _dbContext.TbOrder_item.FindAsync(OrderItemId);
@@ -68,9 +64,6 @@ namespace BET_eCommerceAPI.Services
         private async Task AddItems(OrderItemModel ordermodel)
         {
             var orderpar = await _dbContext.TbOrder_item.FindAsync(ordermodel.Id);
-            //if (student == null)
-            //    throw new ArgumentException($"Invalid order {ordermodel.OrderItemId}");
-
 
             await _dbContext.AddAsync(new TbOrder_Item
             {
